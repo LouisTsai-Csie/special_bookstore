@@ -9,24 +9,39 @@ def getAllBookstore() ->list:
     return res
 
 def getCountyOption(items) ->list:
-    # 創建一個空的 List 並命名為 optionList
+    optionList = []
     for item in items:
-        # 把 cityname 欄位中的縣市名稱擷取出來 並指定給變數 name
-        # hint: 想辦法處理 item['cityName'] 的內容
+        name = item['cityName'][0:3]
+        if name not in optionList:
+            optionList.append(name)
+    return optionList
 
-        # 如果 name 不在 optionList 之中，便把它放入 optionList
-        # hint: 使用 if-else 來進行判斷 / 用 append 把東西放入 optionList
+def getDistrictOption(items, target) ->list:
+    optionList = []
+    for item in items:
+        name = item['cityName']
+        # 如果 name 裡面不包含我們選取的縣市名稱(target) 則略過該次迭代
+		# hint: 使用 if-else 判斷式並且用 continue 跳過
+				
+        name.strip()
+        district = name[5:]
+        if len(district) == 0: continue
+
+        # 如果 district 不在 optionList 裡面，將 district 放入 optionList
+		# hint: 使用 if-else 判斷式並使用 append 將內容放入 optionList
+
     return optionList
 
 def app():
 	bookstoreList = getAllBookstore()
 
-	# 呼叫 getCountyOption 並將回傳值賦值給變數 countyOption
-    
+	countyOption = getCountyOption(bookstoreList)
+
     st.header('特色書店地圖')
 	st.metric('Total bookstore', len(bookstoreList))
-	county = st.selectbox('請選擇縣市', ['A', 'B', 'C']) # 將['A', 'B', 'C']替換成縣市選項 
-	district = st.multiselect('請選擇區域', ['a', 'b', 'c', 'd'])
+	county = st.selectbox('請選擇縣市', countyOption) 
+	# 呼叫 getDistrictOption 並將回傳值賦值給變數 districtOption
+	district = st.multiselect('請選擇區域', ['a', 'b', 'c', 'd']) # 將['a', 'b', 'c', 'd']替換成縣市選項
 
 if __name__ == '__main__':
     app()
