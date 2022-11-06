@@ -30,6 +30,25 @@ def getSpecificBookstore(items, county):
             specificBookstoreList.append(item)
     return specificBookstoreList
 
+def getBookstoreInfo(items):
+    expanderList = []
+    for item in items:
+        expander = st.expander(item['name'])
+        expander.image(item['representImage'])
+        expander.metric('hitRate', item['hitRate'])
+        expander.subheader('Introduction')
+        expander.write(item['intro'])
+        expander.subheader('Address')
+        expander.write(item['address'])
+        expander.subheader('Open Time')
+        expander.write(item['openTime'])
+        expander.subheader('Email')
+        expander.write(item['email'])
+        expanderList.append(expander)
+    return expanderList
+
+
+
 def app():
     bookstoreList = getAllBookstore()
     countyOption = getCountyOption(bookstoreList)
@@ -39,6 +58,7 @@ def app():
     specificBookstore = getSpecificBookstore(bookstoreList, county)
     num = len(specificBookstore)  # 新增
     st.write(f'總共有{num}間書店') # 新增
+    bookstoreInfo = getBookstoreInfo(specificBookstore)
 
 if __name__ == '__main__':
     app()
